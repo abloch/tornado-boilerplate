@@ -1,17 +1,20 @@
 #!/usr/bin/env python
 from tornado.ioloop import IOLoop
 from tornado.web import RequestHandler, Application, url
+from tornado import template
 import os
 
-class HelloHandler(RequestHandler):
+class IndexHandler(RequestHandler):
     def get(self):
-        self.write("Hello, world")
+        self.render("templates/index.html")
 
 def make_app():
-    settings = { "static_path": os.path.join(os.path.dirname(__file__), "static"), }
-    
+    settings = {
+		"static_path": os.path.join(os.path.dirname(__file__), "static"),
+	}
+    templatesLoader = template.Loader(os.path.join(os.path.dirname(__file__), "templates"))
     return Application([
-        url(r"/", HelloHandler),
+        url(r"/", IndexHandler),
         ],**settings)
 
 
